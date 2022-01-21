@@ -1,12 +1,15 @@
 import discord, os, random
 
 
-token = ""
+token = "" 
 server_name = ""
 members = []
 
 
-greetings = ['hello','hi','yo','salute','whats up','wassup','hey']
+greetings = ['hello','hi','yo','salute','whats up','wassup','hey','greetings']
+
+logged_messages = []
+logging = False
 # you must enable the "SERVER MEMBERS INTENT" Privileged Gateway Intent under the bot settings in the Discord developer portal
 intents = discord.Intents.default() 
 intents.members = True
@@ -25,28 +28,49 @@ async def on_member_join(member):
 
 @client.event
 async def on_message(message):
-	print(
-		f'#{message.channel.name}/{message.author.name}#{message.author.discriminator}: {message.content}'
-	)
+	global logging,logged_messages
+	
+	if(logging): 
+		logged_messages.append(f'#{message.channel.name}/{message.author.name}#{message.author.discriminator}: {message.content}')
+
+
 	if(message.content[0] == '$'):
 		if(message.content[1:].lower() in greetings):
 			greeting = greetings[random.randint(0,len(greetings)-1)].capitalize()
 			await message.reply(greeting + " !")
+		
+		elif(message.content[1:].lower() == 'twerk'):
+			await message.channel.send("NO")
+
+		# Messages logging commands
+		elif(message.content[1:].lower() == 'log start'):
+			if(logging):
+				await message.channel.send("Messages logging is already started.")
+			else:
+				logging = True
+				await message.channel.send("Messages logging started.")
+
+		elif(message.content[1:].lower() == 'log stop'):
+			logging = False
+			await message.channel.send("Messages logging Ended.")
+
+		elif(message.content[1:].lower() == 'log show'):
+			if(logging == False):
+				for msg in logged_messages:
+					await message.channel.send(msg)
+			else:
+				await message.channel.send("Stop the logging first !")
+		
+		elif(message.content[1:].lower() == 'log delete'):
+			logged_messages = []
+			await message.channel.send("Messages logs were deleted.")
+		#############################################################
+
+		else:
+			await message.reply("Unrecognized command !")
 
 
-
-'''
-	print("\n Users : ")
-	for member in server.members:
-		if(member.bot == False):
-			print(f"  {member.name}#{member.discriminator} (Nickname: {member.nick})")
-
-
-	print("\n Bots : ")
-	for member in server.members:
-		if(member.bot == True):
-			print(f"  {member.name}#{member.discriminator} (Nickname: {member.nick})")
-'''
-
+	if('send feet' in message.content):
+		await message.channel.send("BRUH")
 
 client.run(token)
