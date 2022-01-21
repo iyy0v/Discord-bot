@@ -1,8 +1,8 @@
 import discord, os, random
 
 
-token = "" 
-server_name = ""
+token = "" 		# <--- put the bot's token here
+server_name = ""	# <--- put the server's name here
 members = []
 
 
