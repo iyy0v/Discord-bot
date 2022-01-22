@@ -6,7 +6,7 @@ idk what this bot will be yet
 - Messages logging
 - Kick members (unfinished)
 
-and some other small commands.
+and some other random commands.
 
 ## Usage
 To use this bot, you will need to have the [Discord.py][discord.py] module installed. <br />
