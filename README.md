@@ -4,8 +4,7 @@ idk what this bot will be yet
 
 ## Utilities
 - Messages logging
-- Kick members (unfinished) 
-<br />
+- Kick members (unfinished) <br />
 and some other small commands.
 
 ## Usage
