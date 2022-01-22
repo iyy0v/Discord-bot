@@ -3,7 +3,9 @@ Discord python module
 idk what this bot will be yet
 
 ## Utilities
-- Messages logging 
+- Messages logging
+- Kick members (unfinished)
+and some other small commands.
 
 ## Usage
 To use this bot, you will need to have the [Discord.py][discord.py] module installed. <br />
