@@ -66,6 +66,18 @@ async def on_message(message):
 			await message.channel.send("Messages logs were deleted.")
 		#############################################################
 
+		# Return the invite link for the bot
+		elif(message.content[1:].lower() == 'invite'):
+			await message.channel.send(discord.utils.oauth_url(client_id))
+
+		# kick a member (INCOMPLETE : Role verification before kicking)
+		elif(message.content[1:6].lower() == 'kick '):
+			member_kicked = discord.utils.get(message.guild.members, name=message.content[6:-5], discriminator=message.content[-4:])
+			if(member_kicked == None):
+				await message.channel.send(f"Incorrect name: {message.content[6:-5]}#{message.content[-4:]}")
+			else:
+				await message.channel.send(f"{member_kicked.name}#{member_kicked.discriminator} was KICKED !")
+
 		else:
 			await message.reply("Unrecognized command !")
 
