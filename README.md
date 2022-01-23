@@ -3,8 +3,10 @@ Discord python module
 idk what this bot will be yet
 
 ## Utilities
-- Messages logging
-- Kick members (unfinished)
+- Delete messages
+- Log messages 
+- Kick members
+- Ban members
 
 and some other random commands.
 
