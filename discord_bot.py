@@ -6,6 +6,7 @@ server_name = ""	# <--- put the server's name here
 prefix = '$'		# <--- put the bot's command prefix that you like ('$' by default)
 
 members = []
+banned_memebers = []
 
 
 greetings = ['hello','hi','yo','salute','whats up','wassup','hey','greetings']
@@ -19,7 +20,8 @@ client = discord.Client(intents=intents)
 
 @client.event
 async def on_ready():
-	server = discord.utils.get(client.guilds, name=server_name)
+	for server in client.guilds:
+		print(f" Connected to : {server.name} #{server.id}")
 
 @client.event
 async def on_member_join(member):
@@ -83,6 +85,22 @@ async def on_message(message):
 			logged_messages = []
 			await message.channel.send("Messages logs were deleted.")
 		#############################################################
+''' TO BE ADDED
+		# mute a member from typing
+		elif(message.content[1:6].lower() == 'mute '):
+			permission = False
+			for role in message.author.roles:
+				if role.permissions.mute_members == True or role.permissions.administrator == True:
+					permission = True
+			if permission:
+				member_kicked = discord.utils.get(message.guild.members, name=message.content[6:-5], discriminator=message.content[-4:])
+				if(member_kicked == None):
+					await message.channel.send(f"Incorrect name: {message.content[6:-5]}#{message.content[-4:]}")
+				else:
+					await message.channel.send(f"{member_kicked.name}#{member_kicked.discriminator} was KICKED !")
+			else:
+				await message.channel.send("You don't have the permission to do that.")
+'''		
 
 		# kick a member 
 		elif(message.content[1:6].lower() == 'kick '):
@@ -95,6 +113,7 @@ async def on_message(message):
 				if(member_kicked == None):
 					await message.channel.send(f"Incorrect name: {message.content[6:-5]}#{message.content[-4:]}")
 				else:
+					await member_banned.kick()
 					await message.channel.send(f"{member_kicked.name}#{member_kicked.discriminator} was KICKED !")
 			else:
 				await message.channel.send("You don't have the permission to do that.")
@@ -110,13 +129,33 @@ async def on_message(message):
 				if(member_banned == None):
 					await message.channel.send(f"Incorrect name: {message.content[5:-5]}#{message.content[-4:]}")
 				else:
+					await member_banned.ban()
+					banned_members.append(member_banned)
 					await message.channel.send(f"{member_banned.name}#{member_banned.discriminator} was BANNED !")
+			else:
+				await message.channel.send("You don't have the permission to do that.")
+		
+		# unban a member 
+		elif(message.content[1:7].lower() == 'unban '):
+			permission = False
+			for role in message.author.roles:
+				if role.permissions.ban_members == True or role.permissions.administrator == True:
+					permission = True
+			if permission:
+				member_unbanned = discord.utils.get(banned_members, name=message.content[7:-5], discriminator=message.content[-4:])
+				if(member_unbanned == None):
+					await message.channel.send(f"Incorrect name: {message.content[7:-5]}#{message.content[-4:]}")
+				else:
+					await member_unbanned.unban()
+					banned_members.remove(member_unbanned)
+					await message.channel.send(f"{member_unbanned.name}#{member_unbanned.discriminator} was UNBANNED !")
 			else:
 				await message.channel.send("You don't have the permission to do that.")
 		
 
 		#############################################################
-		
+
+
 		else:
 			await message.reply("Unrecognized command !")
 
