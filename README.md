@@ -6,7 +6,7 @@ idk what this bot will be yet
 - Delete messages
 - Log messages 
 - Kick members
-- Ban members
+- Ban/Unban members
 
 and some other random commands.
 
