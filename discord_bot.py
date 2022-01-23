@@ -34,7 +34,7 @@ async def on_message(message):
 		logged_messages.append(f'#{message.channel.name}/{message.author.name}#{message.author.discriminator}: {message.content}')
 
 
-	if(message.content[0] == '$'):
+		if(message.content[0] == '$'):
 		if(message.content[1:].lower() in greetings):
 			greeting = greetings[random.randint(0,len(greetings)-1)].capitalize()
 			await message.reply(greeting + " !")
@@ -70,14 +70,18 @@ async def on_message(message):
 		elif(message.content[1:].lower() == 'invite'):
 			await message.channel.send(discord.utils.oauth_url(client_id))
 
-		# kick a member (INCOMPLETE : Role verification before kicking)
+		# kick a member 
 		elif(message.content[1:6].lower() == 'kick '):
-			member_kicked = discord.utils.get(message.guild.members, name=message.content[6:-5], discriminator=message.content[-4:])
-			if(member_kicked == None):
-				await message.channel.send(f"Incorrect name: {message.content[6:-5]}#{message.content[-4:]}")
+			if(message.author.top_role.permissions.administrator == True):
+				member_kicked = discord.utils.get(message.guild.members, name=message.content[6:-5], discriminator=message.content[-4:])
+				if(member_kicked == None):
+					await message.channel.send(f"Incorrect name: {message.content[6:-5]}#{message.content[-4:]}")
+				else:
+					await message.channel.send(f"{member_kicked.name}#{member_kicked.discriminator} was KICKED !")
 			else:
-				await message.channel.send(f"{member_kicked.name}#{member_kicked.discriminator} was KICKED !")
-
+				await message.channel.send("You don't have the permission to do that.")
+		#############################################################
+		
 		else:
 			await message.reply("Unrecognized command !")
 
