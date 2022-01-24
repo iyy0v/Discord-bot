@@ -33,7 +33,7 @@ async def on_ready():
 async def on_member_join(member):
 	await member.create_dm()
 	await member.dm_channel.send(
-		f'EYOOOO {member.name} ! WELCOME TO TECH DUNGEON x)'
+		f'Hey {member.name} ! WELCOME TO {member.guild.name} x)'
 		)
 
 @client.event
@@ -59,11 +59,11 @@ async def on_message(message):
 				f"{' -  **`ban [member_id]`**': <50}{'':^1}{':  Ban a member from the server.':>48}\n"
 				f"{' -  **`unban [member_id]`**': <50}{'':^1}{':  Unban a banned memeber.':>40}\n"
 			)
-		
+		# Reply to greetings
 		elif(message.content[1:].lower() in greetings):
 			greeting = greetings[random.randint(0,len(greetings)-1)].capitalize()
 			await message.reply(greeting + " !")
-		
+		# SUS
 		elif(message.content[1:].lower() == 'twerk'):
 			await message.channel.send("NO")
 
