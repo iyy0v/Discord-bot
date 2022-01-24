@@ -5,6 +5,9 @@ token = "" 		# <--- put the bot's token here
 server_name = ""	# <--- put the server's name here
 prefix = '$'		# <--- put the bot's command prefix that you like ('$' by default)
 
+myUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"		# <--- url that opens when someones press 'WATCH' in the bot's rich presence
+
+
 members = []
 banned_memebers = []
 
@@ -22,6 +25,9 @@ client = discord.Client(intents=intents)
 async def on_ready():
 	for server in client.guilds:
 		print(f" Connected to : {server.name} #{server.id}")
+		myself = discord.utils.get(server.members, id=client.user.id)
+		myActivity = "'" + prefix + "help'"
+	await client.change_presence(activity=discord.Activity(type=discord.ActivityType.streaming, name=myActivity, url=myUrl, platform="Twitch"))
 
 @client.event
 async def on_member_join(member):
@@ -85,24 +91,8 @@ async def on_message(message):
 			logged_messages = []
 			await message.channel.send("Messages logs were deleted.")
 		#############################################################
-''' TO BE ADDED
-		# mute a member from typing
-		elif(message.content[1:6].lower() == 'mute '):
-			permission = False
-			for role in message.author.roles:
-				if role.permissions.mute_members == True or role.permissions.administrator == True:
-					permission = True
-			if permission:
-				member_kicked = discord.utils.get(message.guild.members, name=message.content[6:-5], discriminator=message.content[-4:])
-				if(member_kicked == None):
-					await message.channel.send(f"Incorrect name: {message.content[6:-5]}#{message.content[-4:]}")
-				else:
-					await message.channel.send(f"{member_kicked.name}#{member_kicked.discriminator} was KICKED !")
-			else:
-				await message.channel.send("You don't have the permission to do that.")
-'''		
 
-		# kick a member 
+		# kick a member
 		elif(message.content[1:6].lower() == 'kick '):
 			permission = False
 			for role in message.author.roles:
