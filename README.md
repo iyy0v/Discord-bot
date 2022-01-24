@@ -1,8 +1,8 @@
 # Discord-bot (UNFINISHED)
-Discord python module
-idk what this bot will be yet
 
-## Utilities
+idk what this bot will be yet, I'm just adding more features currently while learning at the same time.
+
+## Features
 - Delete messages
 - Log messages 
 - Kick members
