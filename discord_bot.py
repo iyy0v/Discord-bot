@@ -45,7 +45,22 @@ async def on_message(message):
 
 	# COMMANDS SECTION
 	if(message.content[0] == prefix):
-		if(message.content[1:].lower() in greetings):
+		# Display the help message
+		if(message.content[1:].lower() == 'help'):
+			await message.channel.send(
+				"Available commands are :\n"
+				f"{' -  **`help`**': <50}{'':^1}{':  Show this message.':>49}\n"
+				f"{' -  **`delete [number]`**': <50}{'':^1}{':  Delete the last [number] messages from a channel.':>68}\n"
+				f"{' -  **`log start`**': <50}{'':^1}{':  Start logging messages.':>48}\n"
+				f"{' -  **`log stop`**': <50}{'':^1}{':  Stop logging messages.':>48}\n"
+				f"{' -  **`log show`**': <50}{'':^1}{':  Show logged messages.':>48}\n"
+				f"{' -  **`log clear`**': <50}{'':^1}{':  Clear logged messages.':>48}\n"
+				f"{' -  **`kick [member_id]`**': <50}{'':^1}{':  Kick a member from the server.':>48}\n"
+				f"{' -  **`ban [member_id]`**': <50}{'':^1}{':  Ban a member from the server.':>48}\n"
+				f"{' -  **`unban [member_id]`**': <50}{'':^1}{':  Unban a banned memeber.':>40}\n"
+			)
+		
+		elif(message.content[1:].lower() in greetings):
 			greeting = greetings[random.randint(0,len(greetings)-1)].capitalize()
 			await message.reply(greeting + " !")
 		
@@ -87,9 +102,9 @@ async def on_message(message):
 			else:
 				await message.channel.send("Stop the logging first !")
 		
-		elif(message.content[1:].lower() == 'log delete'):
+		elif(message.content[1:].lower() == 'log clear'):
 			logged_messages = []
-			await message.channel.send("Messages logs were deleted.")
+			await message.channel.send("Messages logs were cleared.")
 		#############################################################
 
 		# kick a member
@@ -144,8 +159,18 @@ async def on_message(message):
 		
 
 		#############################################################
-
-
+		# Disconnect the bot (go offline)
+		elif(message.content[1:11].lower() == 'disconnect'):
+			permission = False
+			for role in message.author.roles:
+				if role.permissions.administrator == True:
+					permission = True
+			if permission:
+				await message.channel.send("Disconnected.")
+				await client.close()
+			else:
+				await message.channel.send("You don't have the permission to do that.")
+		
 		else:
 			await message.reply("Unrecognized command !")
 
