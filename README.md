@@ -1,6 +1,6 @@
-# Discord-bot (UNFINISHED)
+# Discord-bot
 
-idk what this bot will be yet, I'm just adding more features currently while learning at the same time.
+A random Discord bot I made for fun ..... and when bored.
 
 ## Features
 - Delete messages
@@ -11,13 +11,15 @@ idk what this bot will be yet, I'm just adding more features currently while lea
 and some other random commands.
 
 ## Usage
-To use this bot, you will need to have the [Discord.py][discord.py] module installed. <br />
-If you don't have it already, you can install it using this command:
+To host this bot, you will need to have the [Discord.py][discord.py] and [Dotenv][dotenv] modules installed. <br />
+If you don't have them already, you can install them using these commands:
 ```bash
   pip install -U discord.py
+  pip install python-dotenv
 ```
-You will also need to create a bot in the [Discord Developers Portal][dds] to get it's token and inviting link from there.
+You will also need to create a bot in the [Discord Developers Portal][dds] then get it's client_id and token from there and put them in the **.env** file.
 
 
 [discord.py]: https://discordpy.readthedocs.io/
+[dotenv]: https://pypi.org/project/python-dotenv/
 [dds]: https://discord.com/developers/
