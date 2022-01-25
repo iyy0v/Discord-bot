@@ -1,21 +1,21 @@
 import discord, os, random
+from dotenv import load_dotenv
 
+# load data
+load_dotenv()
 
-token = "" 		# <--- put the bot's token here
-prefix = '$'		# <--- put the bot's command prefix that you like ('$' by default)
-
-myUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"		# <--- url that opens when someones press 'WATCH' in the bot's rich presence
-
+token = os.getenv('token')
+client_id = os.getenv('client_id')
+prefix = os.getenv('prefix')
+myUrl = os.getenv('url')
 
 members = []
 banned_memebers = []
-
+logged_messages = []
+logging = False
 
 greetings = ['hello','hi','yo','salute','whats up','wassup','hey','greetings']
 
-logged_messages = []
-logging = False
-# you must enable the "SERVER MEMBERS INTENT" Privileged Gateway Intent under the bot settings in the Discord developer portal
 intents = discord.Intents.default() 
 intents.members = True
 client = discord.Client(intents=intents)
@@ -60,7 +60,7 @@ async def on_message(message):
 
 	# COMMANDS SECTION
 	if(message.content[0] == prefix):
-		# Send the Help message in DM
+		# Display the help message
 		if(message.content[1:].lower() == 'help'):
 			await message.author.create_dm()
 			await message.author.dm_channel.send(
@@ -76,8 +76,7 @@ async def on_message(message):
 				f"{' -  **`ban [member_id]`**': <50}{'':^1}{':  Ban a member from the server.':>48}\n"
 				f"{' -  **`unban [member_id]`**': <50}{'':^1}{':  Unban a banned memeber.':>40}\n"
 			)
-		
-		# Display the Help message in the current channel
+
 		elif(message.content[1:].lower() == 'help here'):
 			await message.channel.send(
 				"Available commands are :\n"
