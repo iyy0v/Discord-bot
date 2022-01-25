@@ -2,7 +2,6 @@ import discord, os, random
 
 
 token = "" 		# <--- put the bot's token here
-server_name = ""	# <--- put the server's name here
 prefix = '$'		# <--- put the bot's command prefix that you like ('$' by default)
 
 myUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"		# <--- url that opens when someones press 'WATCH' in the bot's rich presence
@@ -22,19 +21,35 @@ intents.members = True
 client = discord.Client(intents=intents)
 
 @client.event
+async def on_connect():
+	print(" Connected to Discord.")
+
+@client.event
+async def on_disconnect():
+	print(" Disconnected from Discord.")
+
+@client.event
 async def on_ready():
 	for server in client.guilds:
 		print(f" Connected to : {server.name} #{server.id}")
 		myself = discord.utils.get(server.members, id=client.user.id)
 		myActivity = "'" + prefix + "help'"
 	await client.change_presence(activity=discord.Activity(type=discord.ActivityType.streaming, name=myActivity, url=myUrl, platform="Twitch"))
+	print("\n Bot is ready.\n")
 
 @client.event
 async def on_member_join(member):
 	await member.create_dm()
 	await member.dm_channel.send(
-		f'Hey {member.name} ! WELCOME TO {member.guild.name} x)'
+		 f"Hey {member.name} ! Welcome to {member.guild.name} :)"
 		)
+
+@client.event
+async def on_member_remove(member):
+	await member.create_dm()
+	await member.dm_channel.send(
+		f"We are sad to see you leave {member.guild.name} :( We are going to miss you..."
+	)
 
 @client.event
 async def on_message(message):
@@ -45,11 +60,13 @@ async def on_message(message):
 
 	# COMMANDS SECTION
 	if(message.content[0] == prefix):
-		# Display the help message
+		# Send the Help message in DM
 		if(message.content[1:].lower() == 'help'):
-			await message.channel.send(
+			await message.author.create_dm()
+			await message.author.dm_channel.send(
 				"Available commands are :\n"
-				f"{' -  **`help`**': <50}{'':^1}{':  Show this message.':>49}\n"
+				f"{' -  **`help`**': <50}{'':^1}{':  Send this message in private.':>60}\n"
+				f"{' -  **`help here`**': <50}{'':^1}{':  Send this message in public.':>54}\n"
 				f"{' -  **`delete [number]`**': <50}{'':^1}{':  Delete the last [number] messages from a channel.':>68}\n"
 				f"{' -  **`log start`**': <50}{'':^1}{':  Start logging messages.':>48}\n"
 				f"{' -  **`log stop`**': <50}{'':^1}{':  Stop logging messages.':>48}\n"
@@ -59,11 +76,27 @@ async def on_message(message):
 				f"{' -  **`ban [member_id]`**': <50}{'':^1}{':  Ban a member from the server.':>48}\n"
 				f"{' -  **`unban [member_id]`**': <50}{'':^1}{':  Unban a banned memeber.':>40}\n"
 			)
-		# Reply to greetings
+		
+		# Display the Help message in the current channel
+		elif(message.content[1:].lower() == 'help here'):
+			await message.channel.send(
+				"Available commands are :\n"
+				f"{' -  **`help`**': <50}{'':^1}{':  Send this message in private.':>60}\n"
+				f"{' -  **`help here`**': <50}{'':^1}{':  Send this message in public.':>54}\n"
+				f"{' -  **`delete [number]`**': <50}{'':^1}{':  Delete the last [number] messages from a channel.':>68}\n"
+				f"{' -  **`log start`**': <50}{'':^1}{':  Start logging messages.':>48}\n"
+				f"{' -  **`log stop`**': <50}{'':^1}{':  Stop logging messages.':>48}\n"
+				f"{' -  **`log show`**': <50}{'':^1}{':  Show logged messages.':>48}\n"
+				f"{' -  **`log clear`**': <50}{'':^1}{':  Clear logged messages.':>48}\n"
+				f"{' -  **`kick [member_id]`**': <50}{'':^1}{':  Kick a member from the server.':>48}\n"
+				f"{' -  **`ban [member_id]`**': <50}{'':^1}{':  Ban a member from the server.':>48}\n"
+				f"{' -  **`unban [member_id]`**': <50}{'':^1}{':  Unban a banned memeber.':>40}\n"
+			)
+		
 		elif(message.content[1:].lower() in greetings):
 			greeting = greetings[random.randint(0,len(greetings)-1)].capitalize()
 			await message.reply(greeting + " !")
-		# SUS
+		
 		elif(message.content[1:].lower() == 'twerk'):
 			await message.channel.send("NO")
 
@@ -166,7 +199,7 @@ async def on_message(message):
 				if role.permissions.administrator == True:
 					permission = True
 			if permission:
-				await message.channel.send("Disconnected.")
+				await message.channel.send("Disconnecting...")
 				await client.close()
 			else:
 				await message.channel.send("You don't have the permission to do that.")
@@ -174,8 +207,7 @@ async def on_message(message):
 		else:
 			await message.reply("Unrecognized command !")
 
-
-	if('send feet' in message.content):
+	if('send' in message.content.lower() and 'feet' in message.content.lower()):
 		await message.channel.send("BRUH")
 
 client.run(token)
